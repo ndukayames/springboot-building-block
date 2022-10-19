@@ -12,4 +12,8 @@ public class HelloWordController {
         String message = "Hello Worlds";
         return "message";
     }
+    @RequestMapping(method = RequestMethod.GET, path = "/hello-world-bean")
+    public UserDetailsModel helloWorldBean () {
+        return new UserDetailsModel("james", "Obi", "Lagos");
+    }
 }
