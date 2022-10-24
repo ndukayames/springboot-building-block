@@ -29,7 +29,6 @@ public class UserService {
     // create user service
     public User createUser(User user) throws DuplicateUserException {
         User findUser = findUserByUsername(user.getUsername());
-        System.out.println(findUser);
         if (findUser != null) {
             throw new DuplicateUserException("This user already exists");
         } else {
