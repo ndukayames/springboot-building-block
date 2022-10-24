@@ -5,10 +5,11 @@ import com.example.springbootbuilidingblock.exceptions.DuplicateUserException;
 import com.example.springbootbuilidingblock.exceptions.UserNotFoundException;
 import com.example.springbootbuilidingblock.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class UserController {

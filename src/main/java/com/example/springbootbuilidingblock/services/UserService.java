@@ -2,9 +2,13 @@ package com.example.springbootbuilidingblock.services;
 
 
 import com.example.springbootbuilidingblock.entities.User;
+import com.example.springbootbuilidingblock.exceptions.DuplicateUserException;
+import com.example.springbootbuilidingblock.exceptions.UserNotFoundException;
 import com.example.springbootbuilidingblock.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -58,18 +62,22 @@ public class UserService {
     // delete user by id
     public void deleteUserById(Long id) {
         Optional<User> user = userRepository.findById(id);
+        System.out.println(user == null);
         if (user.isPresent()) {
             userRepository.deleteById(id);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User does not exist.");
         }
     }
 
     // find user by username
     public User findUserByUsername(String username) {
-        Optional<User> user = userRepository.findByUsername(username);
-        if (user.isPresent()) {
-            return user.get();
-        } else {
+        User user = userRepository.findByUsername(username);
+        System.out.println(user == null);
+        if (user == null) {
             return null;
+        } else {
+            return user;
         }
     }
 }
