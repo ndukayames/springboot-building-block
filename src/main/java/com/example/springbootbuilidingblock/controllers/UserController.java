@@ -46,8 +46,13 @@ public class UserController {
 
     // update user by id
     @PutMapping("/users/{id}")
-    public User updateuserById(@PathVariable("id") Long id, @RequestBody User user) {
-        return userService.updateuserById(id, user);
+    public User updateUserById(@PathVariable("id") Long id, @RequestBody User user) {
+        try {
+            return userService.updateUserById(id, user);
+        } catch (UserNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
+        }
+
     }
 
     // delete user by id
