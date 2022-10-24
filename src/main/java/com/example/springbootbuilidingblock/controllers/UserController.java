@@ -24,7 +24,12 @@ public class UserController {
     // create a user endpoint
     @PostMapping("/users")
     public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+        try {
+            return userService.createUser(user);
+        } catch (DuplicateUserException ex) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, ex.getMessage());
+        }
+
     }
 
     // get user by id

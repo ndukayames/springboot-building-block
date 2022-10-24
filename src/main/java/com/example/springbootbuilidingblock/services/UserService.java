@@ -23,8 +23,14 @@ public class UserService {
     }
 
     // create user service
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public User createUser(User user) throws DuplicateUserException {
+        User findUser = findUserByUsername(user.getUsername());
+        System.out.println(findUser);
+        if (findUser != null) {
+            throw new DuplicateUserException("This user already exists");
+        } else {
+            return userRepository.save(user);
+        }
     }
 
     // get user by ID
