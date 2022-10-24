@@ -31,9 +31,9 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<User> createUser(@RequestBody User user, UriComponentsBuilder builder) {
         try {
+            userService.createUser(user);
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(builder.path("/users/{id}").buildAndExpand(user.getId()).toUri());
-            userService.createUser(user);
             return new ResponseEntity<User>(headers, HttpStatus.CREATED);
         } catch (DuplicateUserException ex) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, ex.getMessage());
