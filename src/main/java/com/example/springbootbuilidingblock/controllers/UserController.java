@@ -1,6 +1,8 @@
 package com.example.springbootbuilidingblock.controllers;
 
 import com.example.springbootbuilidingblock.entities.User;
+import com.example.springbootbuilidingblock.exceptions.DuplicateUserException;
+import com.example.springbootbuilidingblock.exceptions.UserNotFoundException;
 import com.example.springbootbuilidingblock.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +36,12 @@ public class UserController {
 
     // get user by id
     @GetMapping("/users/{id}")
-    public Optional<User> getUserById(@PathVariable("id") Long id) {
-        return userService.getUserById(id);
+    public User getUserById(@PathVariable("id") Long id) {
+        try {
+            return userService.getUserById(id);
+        } catch (UserNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
+        }
     }
 
     // update user by id
