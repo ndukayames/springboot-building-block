@@ -3,6 +3,7 @@ package com.example.springbootbuilidingblock.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 // Entity is the table in the sql table
@@ -31,6 +32,9 @@ public class User {
     private String role;
     @Column(name = "ssn", length = 11, nullable = false, unique = true)
     private String ssn;
+
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
 
     // no ar constructor (required for an entity)
     public User() {
@@ -102,6 +106,22 @@ public class User {
 
     public void setNin(String nin) {
         this.ssn = nin;
+    }
+
+    public String getSsn() {
+        return ssn;
+    }
+
+    public void setSsn(String ssn) {
+        this.ssn = ssn;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     @Override
