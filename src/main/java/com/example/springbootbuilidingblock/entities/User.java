@@ -1,6 +1,8 @@
 package com.example.springbootbuilidingblock.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 // Entity is the table in the sql table
@@ -12,8 +14,13 @@ public class User {
     @Id
     @GeneratedValue
     private long id;
+
+
     @Column(name = "user_name", length = 50, nullable = false, unique = true)
+    @NotEmpty(message = "Username is required!")
     private String username;
+
+    @Size(min = 2, message = "First name should contain atleast 2 characters.")
     @Column(name = "first_name", length = 50, nullable = false)
     private String firstname;
     @Column(name = "last_name", length = 50, nullable = false)

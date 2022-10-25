@@ -2,19 +2,24 @@ package com.example.springbootbuilidingblock.controllers;
 
 import com.example.springbootbuilidingblock.entities.User;
 import com.example.springbootbuilidingblock.exceptions.DuplicateUserException;
+import com.example.springbootbuilidingblock.exceptions.UserNameNotFoundException;
 import com.example.springbootbuilidingblock.exceptions.UserNotFoundException;
 import com.example.springbootbuilidingblock.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
+@Validated
 public class UserController {
 
     // autowire user service
@@ -29,7 +34,7 @@ public class UserController {
 
     // create a user endpoint
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@RequestBody User user, UriComponentsBuilder builder) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user, UriComponentsBuilder builder) {
         try {
             userService.createUser(user);
             HttpHeaders headers = new HttpHeaders();
@@ -43,7 +48,7 @@ public class UserController {
 
     // get user by id
     @GetMapping("/users/{id}")
-    public User getUserById(@PathVariable("id") Long id) {
+    public User getUserById(@PathVariable("id") @Min(1) Long id) {
         try {
             return userService.getUserById(id);
         } catch (UserNotFoundException ex) {
@@ -70,13 +75,11 @@ public class UserController {
 
     // find user by username
     @GetMapping("users/byusername/{username}")
-    public User findUserByUsername(@PathVariable("username") String username) {
+    public User findUserByUsername(@PathVariable("username") String username) throws UserNameNotFoundException {
         User user = userService.findUserByUsername(username);
-        System.out.println(user);
         if (user == null) {
-            return null;
-        } else {
-            return user;
+            throw new UserNameNotFoundException("username doesn't match any account");
         }
+        return user;
     }
 }
