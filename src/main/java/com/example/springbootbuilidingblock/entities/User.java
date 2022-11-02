@@ -1,7 +1,6 @@
 package com.example.springbootbuilidingblock.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonFilter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -13,7 +12,8 @@ import java.util.List;
 // class name is the default entity name
 // entity name can also be changed using the @Entity(name = "entity name")
 @Table(name = "users")
-@JsonIgnoreProperties({"firstname", "lastname"})
+@JsonFilter(value = "userFilter")
+//@JsonIgnoreProperties({"firstname", "lastname"})
 public class User {
     // fields
     @Id
@@ -35,7 +35,7 @@ public class User {
     @Column(name = "role", length = 50, nullable = false)
     private String role;
     @Column(name = "ssn", length = 11, nullable = true, unique = true)
-    @JsonIgnore
+//    @JsonIgnore
     private String ssn;
 
     @OneToMany(mappedBy = "user")
